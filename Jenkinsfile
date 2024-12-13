@@ -20,16 +20,16 @@ pipeline {
     parameters {
         // booleanParam(name: "RELEASE", defaultValue: false)
         // choice(name: "DEPLOY_TO", choices: ["", "INT", "PRE", "PROD"])
-        string(name: 'PARAM_APP_NAME', defaultValue: 'ahw-eazyapp', description: 'App Name')
-        string(name: 'PARAM_IMAGE_NAME', defaultValue: 'alpinehelloworld', description: 'Image Name')
+        string(name: 'PARAM_APP_NAME', defaultValue: 'webapp-color', description: 'App Name')
+        string(name: 'PARAM_IMAGE_NAME', defaultValue: 'webapp-color', description: 'Image Name')
         string(name: 'PARAM_IMAGE_TAG', defaultValue: 'latest', description: 'Image Tag')
-        string(name: 'PARAM_PORT_EXPOSED', defaultValue: '8050', description: 'APP EXPOSED PORT')
-        string(name: 'PARAM_INTERNAL_PORT', defaultValue: '5000', description: 'APP INTERNAL PORT')
+        string(name: 'PARAM_PORT_EXPOSED', defaultValue: '8060', description: 'APP EXPOSED PORT')
+        string(name: 'PARAM_INTERNAL_PORT', defaultValue: '8090', description: 'APP INTERNAL PORT')
         string(name: 'PARAM_DOCKERHUB_ID', defaultValue: 'olivierkkoc', description: 'dockerhub id')
-        string(name: 'PARAM_STG_API_ENDPOINT', defaultValue: '52.91.99.25:1993', description: 'STG EAZYLABS API')
-        string(name: 'PARAM_STG_APP_ENDPOINT', defaultValue: '52.91.99.25', description: 'STG EAZYLABS APP')
-        string(name: 'PARAM_PROD_API_ENDPOINT', defaultValue: '34.224.18.9:1993', description: 'PROD EAZYLABS API')
-        string(name: 'PARAM_PROD_APP_ENDPOINT', defaultValue: '34.224.18.9', description: 'PROD EAZYLABS APP')
+        string(name: 'PARAM_STG_API_ENDPOINT', defaultValue: '107.21.67.200:1993', description: 'STG EAZYLABS API')
+        string(name: 'PARAM_STG_APP_ENDPOINT', defaultValue: '107.21.67.200', description: 'STG EAZYLABS APP')
+        string(name: 'PARAM_PROD_API_ENDPOINT', defaultValue: '52.201.253.96:1993', description: 'PROD EAZYLABS API')
+        string(name: 'PARAM_PROD_APP_ENDPOINT', defaultValue: '52.201.253.96', description: 'PROD EAZYLABS APP')
     }
     agent none
     stages {
@@ -59,7 +59,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                   curl -v 172.17.0.1:$APP_EXPOSED_PORT | grep -q "Hello world!"
+                   curl -v 172.17.0.1:$APP_EXPOSED_PORT | grep -q "<h1>Hello"
                 '''
               }
            }
@@ -102,7 +102,7 @@ pipeline {
      }
      stage('PROD - Deploy app') {
        when {
-           expression { GIT_BRANCH == 'origin/master' }
+           expression { GIT_BRANCH == 'origin/training' }
        }
      agent any
 
