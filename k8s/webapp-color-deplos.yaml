@@ -1,0 +1,40 @@
+# Deployment 1 : Bleu
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-color
+      color: blue
+  template:
+    metadata:
+      labels:
+        app: webapp-color
+        color: blue
+    spec:
+      containers:
+      - name: webapp
+        image: kodekloud/webapp-color
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            COLORS="red green blue blue2 pink darkblue"
+            export APP_COLOR=$(echo $COLORS | tr ' ' '\n' | shuf -n 1)
+            python app.py
+
+---
+# Service LoadBalancer unique ciblant le label commun "app: webapp-color"
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-color-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: webapp-color
+  ports:
+  - port: 80
+    targetPort: 8080
