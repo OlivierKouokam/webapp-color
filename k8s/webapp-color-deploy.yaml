@@ -2,18 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-blue
+  name: webapp-dp
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: webapp-color
-      color: blue
+      app: webapp-color-dp
   template:
     metadata:
       labels:
-        app: webapp-color
-        color: blue
+        app: webapp-color-dp
     spec:
       containers:
       - name: webapp
@@ -30,11 +28,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp-color-lb
+  name: webapp-color-svc
 spec:
   type: LoadBalancer
   selector:
-    app: webapp-color
+    app: webapp-color-dp
   ports:
   - port: 80
     targetPort: 8080
