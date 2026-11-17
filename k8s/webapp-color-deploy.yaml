@@ -1,0 +1,84 @@
+# Deployment 1 : Bleu
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-color
+      color: blue
+  template:
+    metadata:
+      labels:
+        app: webapp-color
+        color: blue
+    spec:
+      containers:
+      - name: webapp
+        image: kodekloud/webapp-color
+        env:
+        - name: APP_COLOR
+          value: "blue"
+---
+# Deployment 2 : Vert
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-color
+      color: green
+  template:
+    metadata:
+      labels:
+        app: webapp-color
+        color: green
+    spec:
+      containers:
+      - name: webapp
+        image: kodekloud/webapp-color
+        env:
+        - name: APP_COLOR
+          value: "green"
+---
+# Deployment 3 : Rose
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-pink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-color
+      color: pink
+  template:
+    metadata:
+      labels:
+        app: webapp-color
+        color: pink
+    spec:
+      containers:
+      - name: webapp
+        image: kodekloud/webapp-color
+        env:
+        - name: APP_COLOR
+          value: "pink"
+---
+# Service LoadBalancer unique ciblant le label commun "app: webapp-color"
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-color-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: webapp-color
+  ports:
+  - port: 80
+    targetPort: 8080
