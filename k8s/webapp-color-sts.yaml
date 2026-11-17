@@ -25,6 +25,7 @@ spec:
               *-2) export APP_COLOR=pink ;;
             esac
             python app.py
+---
 # Service NodePort unique ciblant le label commun "app: webapp-color"
 apiVersion: v1
 kind: Service
